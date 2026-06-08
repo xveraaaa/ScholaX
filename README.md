@@ -8,7 +8,7 @@
 - MySQL/XAMPP
 - npm or yarn
 
-### Backend Setup
+### Setup
 ```bash
 cd backend
 npm install
