@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-// import "./Navbar.css";
+import "./Navbar.css";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -12,11 +12,10 @@ export default function Navbar() {
 
   return (
     <header className="navbar">
-      <h3>Admin Panel</h3>
-
-      <button onClick={logout}>
-        Logout
-      </button>
+      {/* code dito ng navigation bar 
+          alam niyo naman yon diba?
+      */}
+      
     </header>
   );
 }

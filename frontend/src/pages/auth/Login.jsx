@@ -57,6 +57,17 @@ export default function Login() {
   };
 
   return (
+
+    // kayo na bahala dito
+
+
+
+
+
+
+
+
+
     <div style={{ maxWidth: "400px", margin: "50px auto", padding: "20px" }}>
       <h1>ScholaX Login</h1>
       
