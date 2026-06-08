@@ -10,8 +10,6 @@
 
 ### Setup
 ```bash
-cp .env.example .env  # configure your database
-
 # 1. clone the repository
 git clone https://github.com/xveraaaa/ScholaX.git
 cd ScholaX
@@ -23,6 +21,8 @@ npm install
 # 3. install frontend dependencies
 cd ../frontend
 npm install
+
+cp .env.example .env  # configure your database
 
 # 4. run both
 # backend (terminal 1)
