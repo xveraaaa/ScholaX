@@ -12,11 +12,10 @@ export default function Navbar() {
 
   return (
     <header className="navbar">
-      <h3>Admin Panel</h3>
-
-      <button onClick={logout}>
-        Logout
-      </button>
+      {/* code dito ng navigation bar 
+          alam niyo naman yon diba?
+      */}
+      
     </header>
   );
 }

@@ -47,7 +47,9 @@ export default function Sidebar() {
   return (
     <aside className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
       <div className="sidebar-header">
-        
+        {/* 
+            code dito ng side bar
+        */}
       </div>
     </aside>
   );
