@@ -17,7 +17,7 @@ npm run dev
 
 
 
-# 1. Clone the repository
+# 1. clone the repository
 git clone https://github.com/xveraaaa/ScholaX.git
 cd ScholaX
 
