@@ -1,4 +1,5 @@
 import Navbar from "../../components/home/Navbar";
+import Footer from "../../components/home/Footer";
 import { useEffect } from "react";
 
 export default function FAQ() {
@@ -69,6 +70,7 @@ export default function FAQ() {
         </div>
 
       </section>
+      <Footer />
     </>
   );
 }

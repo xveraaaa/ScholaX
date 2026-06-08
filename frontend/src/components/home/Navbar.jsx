@@ -31,7 +31,11 @@ export default function Navbar() {
             FAQ
           </Link>
 
-          <Link to="/campus-tour">Campus Tour</Link>
+          <Link to="/campus-tour" className="hover:text-blue-600">Campus Tour</Link>
+
+          <Link to="/news" className="hover:text-blue-600">News</Link>
+
+          <Link to="/admissions" className="hover:text-blue-600">Admissions</Link>
 
           <Link
             to="/login"

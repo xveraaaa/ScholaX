@@ -1,4 +1,5 @@
 import Navbar from "../../components/home/Navbar";
+import Footer from "../../components/home/Footer";
 import { useEffect } from "react";
 
 export default function Programs() {
@@ -58,6 +59,7 @@ export default function Programs() {
         </div>
 
       </section>
+      <Footer />
     </>
   );
 }

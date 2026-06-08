@@ -1,4 +1,5 @@
 import Navbar from "../../components/home/Navbar";
+import Footer from "../../components/home/Footer";
 import { useEffect } from "react";
 
 export default function Contact() {
@@ -48,7 +49,7 @@ export default function Contact() {
               <p>
                 📧 Email:
                 <br />
-                info@scholax.edu.ph
+                info@icct.edu.ph
               </p>
 
             </div>
@@ -105,11 +106,13 @@ export default function Contact() {
 
         <iframe
           title="School Location"
-          src="https://www.google.com/maps?q=Manila&output=embed"
+          // src="https://www.google.com/maps?q=Manila&output=embed"
+          src="https://www.google.com/maps?q=ICCTAntipolo&output=embed"
           className="w-full h-96 rounded-xl shadow"
         ></iframe>
 
       </section>
+      <Footer />
     </>
   );
 }

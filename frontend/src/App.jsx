@@ -6,10 +6,15 @@ import Programs from "./pages/home/Programs";
 import Contact from "./pages/home/Contact";
 import FAQ from "./pages/home/FAQ";
 import CampusTour from "./pages/home/CampusTour";
+import News from "./pages/home/News";
+import Privacy from "./pages/home/Privacy";
+import Terms from "./pages/home/Terms";
+import Admissions from "./pages/home/Admissions";
+import Login from "./pages/home/Login";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// import AdminDashboard from "./pages/admin/Dashboard";
+import AdminDashboard from "./pages/admin/Dashboard";
 // import FacultyDashboard from "./pages/faculty/Dashboard";
 // import StudentDashboard from "./pages/student/Dashboard";
 
@@ -23,21 +28,22 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/campus-tour" element={<CampusTour />} />
-
-
-
-        
-
-        {/* <Route
-  path="/admin/dashboard"
-  element={
-    <ProtectedRoute allowedRole="ADMIN">
-      <AdminDashboard />
-    </ProtectedRoute>
-  }
-/>
+        <Route path="/news" element={<News />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/admissions" element={<Admissions />} />
+        <Route path="/login" element={<Login />} />
 
         <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* <Route
   path="/faculty/dashboard"
   element={
     <ProtectedRoute allowedRole="FACULTY">

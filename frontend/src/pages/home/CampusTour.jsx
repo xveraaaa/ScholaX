@@ -1,5 +1,6 @@
 import Navbar from "../../components/home/Navbar";
 import { useEffect } from "react";
+import Footer from "../../components/home/Footer";
 
 export default function CampusTour() {
     useEffect(() => {
@@ -44,7 +45,7 @@ export default function CampusTour() {
 
         <p className="text-gray-600 mb-10">
           Explore our facilities and discover what makes
-          ScholaX an excellent place to learn and grow.
+          ICCT an excellent place to learn and grow.
         </p>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -73,6 +74,7 @@ export default function CampusTour() {
         </div>
 
       </section>
+      <Footer />
     </>
   );
 }
