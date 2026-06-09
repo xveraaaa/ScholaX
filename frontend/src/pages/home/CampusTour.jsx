@@ -2,6 +2,8 @@ import Navbar from "../../components/home/Navbar";
 import { useEffect } from "react";
 import Footer from "../../components/home/Footer";
 
+import bun from "../../assets/bun_06.png"
+
 export default function CampusTour() {
     useEffect(() => {
         document.title = "Campus Tour";
@@ -9,7 +11,7 @@ export default function CampusTour() {
   const places = [
     {
       title: "Main Library",
-      image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da"
+      image: bun
     },
     {
       title: "Computer Laboratory",

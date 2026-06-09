@@ -1,7 +1,11 @@
 import Navbar from "../../components/home/Navbar";
 import Footer from "../../components/home/Footer";
+import { useEffect } from "react";
 
 export default function Privacy() {
+  useEffect(() => {
+      document.title = "Privacy Policy";
+    },[])
   return (
     <>
       <Navbar />

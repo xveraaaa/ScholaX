@@ -18,11 +18,11 @@ cd ScholaX
 cd backend
 npm install
 
+cp .env.example .env  # configure your database
+
 # 3. install frontend dependencies
 cd ../frontend
 npm install
-
-cp .env.example .env  # configure your database
 
 # 4. run both
 # backend (terminal 1)

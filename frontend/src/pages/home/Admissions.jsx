@@ -1,7 +1,12 @@
 import Navbar from "../../components/home/Navbar";
 import Footer from "../../components/home/Footer";
 
+import { useEffect } from "react";
+
 export default function Admissions() {
+  useEffect(() => {
+    document.title = "Admissions";
+  }, []);
   return (
     <>
       <Navbar />

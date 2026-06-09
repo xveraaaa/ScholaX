@@ -1,6 +1,9 @@
 import Navbar from "../../components/home/Navbar";
 import Footer from "../../components/home/Footer";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
+
+import loginBg from "../../assets/login_bg.jpeg";
 
 export default function Home() {
   useEffect(() => {
@@ -11,7 +14,11 @@ export default function Home() {
     <>
       <Navbar />
 
-      <section className="bg-blue-900 text-white min-h-[80vh] flex items-center">
+      <section className="bg-blue-900 text-white min-h-[80vh] flex items-center min-h-screen flex items-center justify-center bg-cover bg-center" 
+      style={{
+                backgroundImage: `url(${loginBg})`,
+              }}
+      >
 
         <div className="max-w-7xl mx-auto px-6">
 
@@ -23,9 +30,11 @@ export default function Home() {
             Empowering future innovators through
             quality education and technology.
           </p>
-
+          
           <button className="bg-white text-blue-900 px-6 py-3 rounded-lg font-semibold">
+            <Link to="/programs">
             Explore Programs
+            </Link>
           </button>
 
         </div>

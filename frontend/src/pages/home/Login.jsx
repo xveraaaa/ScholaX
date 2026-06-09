@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 
 import Navbar from "../../components/home/Navbar";
 import Footer from "../../components/home/Footer";
 
+import loginBg from "../../assets/login_bg.jpeg"
+
 export default function Login() {
+
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
 
   const navigate = useNavigate();
 
@@ -56,9 +62,11 @@ export default function Login() {
   return (
     <>
       <Navbar />
-
-      <div className="min-h-[80vh] flex items-center justify-center bg-gray-100">
-
+      
+      
+      <div className="min-h-[80vh] flex items-center justify-center bg-gray-100 min-h-screen flex items-center justify-center bg-cover bg-center" style={{
+          backgroundImage: `url(${loginBg})`
+        }}>
         <form
           onSubmit={handleSubmit}
           className="bg-white p-8 rounded-xl shadow-md w-full max-w-md"
