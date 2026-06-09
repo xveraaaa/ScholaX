@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, NavLink } from "react-router-dom";
 
 import api from "../../services/api";
 
@@ -8,6 +8,7 @@ import Footer from "../../components/home/Footer";
 
 import loginBg from "../../assets/login_bg.jpeg";
 import bun from "../../assets/bun_06.png";
+import icct from "../../assets/home/icct.jpeg"
 
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -52,42 +53,31 @@ export default function Login() {
   return (
     <>
       <Navbar />
-
-      <section
-        className="relative min-h-screen bg-cover bg-center"
+      <div
+        className="min-h-screen flex justify-center items-center bg-cover bg-center"
         style={{
-          backgroundImage: `url(${loginBg})`,
+          backgroundImage: `url(${icct})`,
         }}
       >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="w-[450px] max-w-[95%] bg-white/20 backdrop-blur-xl border border-white/30 rounded-3xl shadow-2xl p-10">
+          <div className="text-center mb-8">
+            <h1 className="text-5xl font-bold text-white tracking-widest">
+              ScholaX
+            </h1>
 
-        {/* Login Form */}
-        <div className="relative flex items-center justify-center min-h-screen px-6">
-          <form
-            onSubmit={handleSubmit}
-            className="
-              w-full
-              max-w-md
-              bg-white
-              rounded-2xl
-              shadow-2xl
-              p-8
-            "
-          >
-            <div className="text-center mb-8">
-              <img src={bun} alt="ScholaX" className="w-20 h-20 mx-auto mb-4" />
-              <h1 className="text-4xl font-bold text-blue-900 mb-2">
-                Welcome Back
-              </h1>
+            <h2 className="text-2xl font-semibold text-white mt-2">
+              LOGIN PAGE
+            </h2>
+          </div>
 
-              <p className="text-gray-600">Sign in to access your account</p>
-            </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-5">
+              <label className="block text-white font-bold mb-2">
+                Student Number / Admin
+              </label>
 
-            <div className="space-y-5">
               <input
                 type="text"
-                placeholder="Username"
                 value={form.username}
                 onChange={(e) =>
                   setForm({
@@ -95,23 +85,19 @@ export default function Login() {
                     username: e.target.value,
                   })
                 }
-                className="
-                  w-full
-                  border
-                  border-gray-300
-                  rounded-lg
-                  px-4
-                  py-3
-                  focus:outline-none
-                  focus:ring-2
-                  focus:ring-blue-500
-                "
+                required
+                className="w-full h-14 rounded-xl px-4 text-black outline-none"
               />
+            </div>
+
+            <div className="mb-5">
+              <label className="block text-white font-bold mb-2">
+                Password
+              </label>
 
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
-                  placeholder="Password"
                   value={form.password}
                   onChange={(e) =>
                     setForm({
@@ -119,18 +105,8 @@ export default function Login() {
                       password: e.target.value,
                     })
                   }
-                  className="
-                    w-full
-                    border
-                    border-gray-300
-                    rounded-lg
-                    px-4
-                    py-3
-                    pr-12
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-blue-500
-                  "
+                  required
+                  className="w-full h-14 rounded-xl px-4 text-black outline-none"
                 />
 
                 <button
@@ -148,51 +124,47 @@ export default function Login() {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-              <div className="flex justify-end">
-                <Link
-                  to="/forgot-password"
-                  className="
+            </div>
+
+            <div className="flex justify-between items-center text-white mb-5">
+              <label className="flex items-center gap-2">
+                <input type="checkbox" />
+                Remember me
+              </label>
+
+              <Link
+                to="/forgot-password"
+                className="
                     text-sm
                     text-blue-900
                     hover:underline
                     font-medium
                   "
-                >
-                  Forgot Password?
-                </Link>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="
-                  w-full
-                  bg-blue-900
-                  text-white
-                  py-3
-                  rounded-lg
-                  font-semibold
-                  hover:bg-blue-800
-                  transition
-                "
               >
-                {loading ? "Logging in..." : "Login" }
-              </button>
-              <p className="text-center text-sm text-gray-600 mt-6">
-                Having trouble accessing your account?
-                <Link
-                  to="/contact"
-                  className="ml-1 text-blue-900 font-medium hover:underline"
-                >
-                  Contact Support
-                </Link>
-              </p>
+                Forgot Password?
+              </Link>
             </div>
-          </form>
-        </div>
-      </section>
 
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full h-14 rounded-xl bg-blue-700 hover:bg-blue-900 duration-300 text-white font-bold text-lg"
+            >
+              {loading ? "Signing in..." : "SIGN IN"}
+            </button>
+          </form>
+          <button className="w-full h-14 rounded-xl bg-gray-700 hover:bg-gray-900 duration-300 text-white font-bold text-lg mt-4">
+              <Link
+                to="/create-account"
+              >
+                CREATE ACCOUNT
+              </Link>
+            </button>
+        </div>
+      </div>
       <Footer />
     </>
   );
 }
+
+
