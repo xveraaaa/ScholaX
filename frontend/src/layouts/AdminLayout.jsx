@@ -1,29 +1,32 @@
-export default function AdminLayout({
-  children
-}) {
+import { useState } from "react";
+
+import AdminNavbar from "../components/admin/Navbar";
+import AdminSidebar from "../components/admin/Sidebar";
+
+export default function AdminLayout({ children }) {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div className="flex min-h-screen">
+    <div className="min-h-screen bg-slate-100">
+      <AdminNavbar
+        toggleSidebar={() => setCollapsed(!collapsed)}
+      />
 
-      <aside className="w-64 bg-slate-900 text-white p-5">
-        <h1 className="text-2xl font-bold">
-          ScholaX
-        </h1>
+      <div className="flex">
+        <AdminSidebar collapsed={collapsed} />
 
-        <ul className="mt-8 space-y-4">
-          <li>Dashboard</li>
-          <li>Students</li>
-          <li>Teachers</li>
-          <li>Courses</li>
-          <li>Enrollments</li>
-          <li>Grades</li>
-          <li>Attendance</li>
-        </ul>
-      </aside>
-
-      <main className="flex-1 p-6 bg-slate-100">
-        {children}
-      </main>
-
+        <main
+          className={`
+            flex-1
+            transition-all
+            duration-300
+            p-8
+            ${collapsed ? "ml-20" : "ml-64"}
+          `}
+        >
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

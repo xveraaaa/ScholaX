@@ -11,6 +11,9 @@ import Privacy from "./pages/home/Privacy";
 import Terms from "./pages/home/Terms";
 import Admissions from "./pages/home/Admissions";
 import Login from "./pages/home/Login";
+import ForgotPassword from "./pages/home/ForgotPassword";
+
+import NotFound from "./pages/public/NotFound";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -18,50 +21,49 @@ import AdminDashboard from "./pages/admin/Dashboard";
 // import FacultyDashboard from "./pages/faculty/Dashboard";
 // import StudentDashboard from "./pages/student/Dashboard";
 
+import { Toaster } from "react-hot-toast";
+
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/programs" element={<Programs />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/faq" element={<FAQ />} />
-        <Route path="/campus-tour" element={<CampusTour />} />
-        <Route path="/news" element={<News />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/admissions" element={<Admissions />} />
-        <Route path="/login" element={<Login />} />
-
-        <Route
-          path="/admin/dashboard"
-          element={
-            <ProtectedRoute allowedRole="ADMIN">
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* <Route
-  path="/faculty/dashboard"
-  element={
-    <ProtectedRoute allowedRole="FACULTY">
-      <FacultyDashboard />
-    </ProtectedRoute>
-  }
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/programs" element={<Programs />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/campus-tour" element={<CampusTour />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/admissions" element={<Admissions />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
 />
 
-        <Route
-  path="/student/dashboard"
-  element={
-    <ProtectedRoute allowedRole="STUDENT">
-      <StudentDashboard />
-    </ProtectedRoute>
-  }
-/> */}
-      </Routes>
-    </BrowserRouter>
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute allowedRole="ADMIN">
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 3000,
+        }}
+      />
+    </>
   );
 }
 

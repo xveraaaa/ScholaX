@@ -1,118 +1,157 @@
-import Navbar from "../../components/home/Navbar";
-import Footer from "../../components/home/Footer";
 import { useEffect } from "react";
+import PublicLayout from "../../layouts/HomeLayout";
 
 export default function Contact() {
-    useEffect(() => {
+  useEffect(() => {
     document.title = "Contact Us";
-  },[])
+  }, []);
+
   return (
-    <>
-      <Navbar />
+    <PublicLayout>
+      {/* Hero */}
+      <section className="bg-blue-900 text-white py-20">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            Contact Us
+          </h1>
 
-      <section className="max-w-7xl mx-auto px-6 py-16">
+          <p className="text-xl max-w-3xl mx-auto">
+            We'd love to hear from you. Reach out to us for inquiries,
+            admissions assistance, and student services.
+          </p>
+        </div>
+      </section>
 
-        <h1 className="text-5xl font-bold text-blue-900 mb-4">
-          Contact Us
-        </h1>
-
-        <p className="text-gray-600 mb-10">
-          We'd love to hear from you. Reach out to us through the
-          following contact information.
-        </p>
-
-        <div className="grid md:grid-cols-2 gap-8">
-
+      {/* Contact Section */}
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <div className="grid gap-8 lg:grid-cols-5">
+          
           {/* Contact Info */}
-          <div className="bg-white shadow rounded-xl p-6">
-
-            <h2 className="text-2xl font-bold mb-4">
+          <div className="lg:col-span-2 bg-white rounded-2xl shadow-md p-8">
+            <h2 className="text-3xl font-bold text-blue-900 mb-8">
               School Information
             </h2>
 
-            <div className="space-y-3">
+            <div className="space-y-6 text-gray-700">
+              <div>
+                <h3 className="font-semibold text-lg mb-2">
+                  📍 Address
+                </h3>
 
-              <p>
-                📍 Address:
-                <br />
-                ICCT,
-                Antipolo Campus,
-                Antipolo City, Philippines
-              </p>
+                <p>
+                  ICCT Antipolo Campus
+                  <br />
+                  Antipolo City, Philippines
+                </p>
+              </div>
 
-              <p>
-                📞 Phone:
-                <br />
-                +63 912 345 6789
-              </p>
+              <div>
+                <h3 className="font-semibold text-lg mb-2">
+                  📞 Phone
+                </h3>
 
-              <p>
-                📧 Email:
-                <br />
-                info@icct.edu.ph
-              </p>
+                <p>+63 912 345 6789</p>
+              </div>
 
+              <div>
+                <h3 className="font-semibold text-lg mb-2">
+                  📧 Email
+                </h3>
+
+                <p>info@icct.edu.ph</p>
+              </div>
             </div>
-
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white shadow rounded-xl p-6">
-
-            <h2 className="text-2xl font-bold mb-4">
+          <div className="lg:col-span-3 bg-white rounded-2xl shadow-md p-8">
+            <h2 className="text-3xl font-bold text-blue-900 mb-8">
               Send a Message
             </h2>
 
-            <form className="space-y-4">
-
+            <form className="space-y-5">
               <input
                 type="text"
                 placeholder="Full Name"
-                className="w-full border p-3 rounded"
+                className="
+                  w-full
+                  border
+                  border-gray-300
+                  rounded-lg
+                  px-4
+                  py-3
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
               />
 
               <input
                 type="email"
                 placeholder="Email Address"
-                className="w-full border p-3 rounded"
+                className="
+                  w-full
+                  border
+                  border-gray-300
+                  rounded-lg
+                  px-4
+                  py-3
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
               />
 
               <textarea
-                rows="5"
+                rows="6"
                 placeholder="Your Message"
-                className="w-full border p-3 rounded"
-              ></textarea>
+                className="
+                  w-full
+                  border
+                  border-gray-300
+                  rounded-lg
+                  px-4
+                  py-3
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
+              />
 
               <button
-                className="bg-blue-900 text-white px-6 py-3 rounded"
+                type="submit"
+                className="
+                  bg-blue-900
+                  text-white
+                  px-8
+                  py-3
+                  rounded-lg
+                  font-semibold
+                  hover:bg-blue-800
+                  transition
+                "
               >
                 Send Message
               </button>
-
             </form>
-
           </div>
-
         </div>
-
       </section>
 
       {/* Map */}
-      <section className="max-w-7xl mx-auto px-6 pb-16">
-
-        <h2 className="text-3xl font-bold mb-4">
+      <section className="max-w-7xl mx-auto px-6 pb-20">
+        <h2 className="text-4xl font-bold text-blue-900 mb-8">
           Find Us
         </h2>
 
-        <iframe
-          title="School Location"
-          // src="https://www.google.com/maps?q=Manila&output=embed"
-          src="https://www.google.com/maps?q=ICCTAntipolo&output=embed"
-          className="w-full h-96 rounded-xl shadow"
-        ></iframe>
-
+        <div className="overflow-hidden rounded-2xl shadow-md">
+          <iframe
+            title="School Location"
+            src="https://www.google.com/maps?q=ICCTAntipolo&output=embed"
+            className="w-full h-[500px]"
+          />
+        </div>
       </section>
-      <Footer />
-    </>
+    </PublicLayout>
   );
 }

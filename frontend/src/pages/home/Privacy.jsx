@@ -10,8 +10,7 @@ export default function Privacy() {
     <>
       <Navbar />
 
-      <section className="max-w-5xl mx-auto px-6 py-16">
-
+      <section className="max-w-5xl mx-auto px-6 py-16 min-h-[calc(100vh-300px)]">
         <h1 className="text-5xl font-bold mb-6">
           Privacy Policy
         </h1>

@@ -9,7 +9,7 @@ export default function ProtectedRoute({
   );
 
   if (!user) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
 
   if (user.role !== allowedRole) {
