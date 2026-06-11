@@ -1,29 +1,31 @@
 @echo off
 cls
-echo Auto-commit loop started. Press Ctrl+C to stop.
+setlocal enabledelayedexpansion
+
+echo ========================================
+echo    Auto-Commit Loop (Ctrl+C to stop)
+echo    Delay: 60 seconds between cycles
+echo ========================================
 echo.
 
 :loop
-echo [%date% %time%] Checking for updates...
+set timestamp=%date% %time%
+echo [!timestamp!] Cycle starting...
 
-REM Pull latest changes
-git pull
-
-REM Add all changes
+git pull >nul 2>&1
 git add --all
 
-REM Only commit if there are changes
 git diff --cached --quiet
 if errorlevel 1 (
-    echo Changes detected, committing...
-    git commit -m "auto commit %date% %time%"
-    echo Pushing to GitHub...
+    echo [!timestamp!] Changes found - committing...
+    git commit -m "auto commit !timestamp!"
     git push
+    echo [!timestamp!] Push complete!
 ) else (
-    echo No changes to commit.
+    echo [!timestamp!] No changes detected.
 )
 
-REM Wait 60 seconds before next check (optional)
+echo Waiting 60 seconds...
 timeout /t 60 /nobreak >nul
-
+cls
 goto loop
