@@ -18,6 +18,10 @@ import NotFound from "./pages/public/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import AdminDashboard from "./pages/admin/Dashboard";
+import Students from "./pages/admin/Students";
+import Campuses from "./pages/admin/Campus";
+import AdminPrograms from "./pages/admin/Programs";
+
 // import FacultyDashboard from "./pages/faculty/Dashboard";
 // import StudentDashboard from "./pages/student/Dashboard";
 
@@ -49,6 +53,12 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/admin/students" element={<Students />} />
+          <Route path="/admin/campuses" element={<Campuses />} />
+          <Route path="/admin/programs" element={<AdminPrograms />} />
+
+
+
 
           <Route path="*" element={<NotFound />} />
         </Routes>

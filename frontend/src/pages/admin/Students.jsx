@@ -3,20 +3,25 @@ import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../layouts/AdminLayout";
 import api from "../../services/api";
 import toast from "react-hot-toast";
-import { FaEdit, FaTrash, FaEye, FaPlus } from "react-icons/fa";
+import { FaEdit, FaTrash, FaEye, FaPlus, FaSearch } from "react-icons/fa";
 
 export default function Students() {
   const navigate = useNavigate();
   const [students, setStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
   const [campuses, setCampuses] = useState([]);
   const [programs, setPrograms] = useState([]);
+  const [sections, setSections] = useState([]);
   const [selectedCampus, setSelectedCampus] = useState("");
+  const [selectedProgram, setSelectedProgram] = useState("");
+  const [selectedSection, setSelectedSection] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [filteredPrograms, setFilteredPrograms] = useState([]);
+  const [filteredSections, setFilteredSections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
   const [formData, setFormData] = useState({
-    user_id: "",
     student_id: "",
     first_name: "",
     middle_name: "",
@@ -27,7 +32,8 @@ export default function Students() {
     contact: "",
     address: "",
     campus_id: "",
-    program_id: ""
+    program_id: "",
+    section_id: ""
   });
 
   useEffect(() => {
@@ -35,23 +41,67 @@ export default function Students() {
     fetchStudents();
     fetchCampuses();
     fetchPrograms();
+    fetchSections();
   }, []);
 
+  // Filter students when filters change
   useEffect(() => {
-    // Filter programs based on selected campus
+    let filtered = [...students];
+    
+    if (selectedCampus) {
+      filtered = filtered.filter(s => s.campus_id == selectedCampus);
+    }
+    
+    if (selectedProgram) {
+      filtered = filtered.filter(s => s.program_id == selectedProgram);
+    }
+    
+    if (selectedSection) {
+      filtered = filtered.filter(s => s.section_id == selectedSection);
+    }
+    
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter(s => 
+        s.student_id?.toLowerCase().includes(term) ||
+        s.first_name?.toLowerCase().includes(term) ||
+        s.last_name?.toLowerCase().includes(term) ||
+        s.email?.toLowerCase().includes(term) ||
+        s.contact?.toLowerCase().includes(term)
+      );
+    }
+    
+    setFilteredStudents(filtered);
+  }, [selectedCampus, selectedProgram, selectedSection, searchTerm, students]);
+
+  // Filter programs based on selected campus
+  useEffect(() => {
     if (selectedCampus) {
       const filtered = programs.filter(p => p.campus_id == selectedCampus);
       setFilteredPrograms(filtered);
     } else {
       setFilteredPrograms([]);
     }
-    setFormData(prev => ({ ...prev, program_id: "" }));
+    setSelectedProgram("");
+    setSelectedSection("");
   }, [selectedCampus, programs]);
+
+  // Filter sections based on selected program
+  useEffect(() => {
+    if (selectedProgram) {
+      const filtered = sections.filter(s => s.program_id == selectedProgram);
+      setFilteredSections(filtered);
+    } else {
+      setFilteredSections([]);
+    }
+    setSelectedSection("");
+  }, [selectedProgram, sections]);
 
   const fetchStudents = async () => {
     try {
       const res = await api.get("/students");
       setStudents(res.data);
+      setFilteredStudents(res.data);
     } catch (error) {
       toast.error("Failed to fetch students");
     } finally {
@@ -74,6 +124,15 @@ export default function Students() {
       setPrograms(res.data);
     } catch (error) {
       console.error("Failed to fetch programs", error);
+    }
+  };
+
+  const fetchSections = async () => {
+    try {
+      const res = await api.get("/sections");
+      setSections(res.data);
+    } catch (error) {
+      console.error("Failed to fetch sections", error);
     }
   };
 
@@ -110,8 +169,9 @@ export default function Students() {
   const resetForm = () => {
     setEditingStudent(null);
     setSelectedCampus("");
+    setSelectedProgram("");
+    setSelectedSection("");
     setFormData({
-      user_id: "",
       student_id: "",
       first_name: "",
       middle_name: "",
@@ -122,7 +182,8 @@ export default function Students() {
       contact: "",
       address: "",
       campus_id: "",
-      program_id: ""
+      program_id: "",
+      section_id: ""
     });
   };
 
@@ -134,8 +195,9 @@ export default function Students() {
   const openEditModal = (student) => {
     setEditingStudent(student);
     setSelectedCampus(student.campus_id || "");
+    setSelectedProgram(student.program_id || "");
+    setSelectedSection(student.section_id || "");
     setFormData({
-      user_id: student.user_id,
       student_id: student.student_id,
       first_name: student.first_name,
       middle_name: student.middle_name || "",
@@ -146,9 +208,32 @@ export default function Students() {
       contact: student.contact,
       address: student.address || "",
       campus_id: student.campus_id || "",
-      program_id: student.program_id || ""
+      program_id: student.program_id || "",
+      section_id: student.section_id || ""
     });
     setShowModal(true);
+  };
+
+  const clearFilters = () => {
+    setSelectedCampus("");
+    setSelectedProgram("");
+    setSelectedSection("");
+    setSearchTerm("");
+  };
+
+  const getCampusName = (campusId) => {
+    const campus = campuses.find(c => c.id == campusId);
+    return campus?.campus_name || "N/A";
+  };
+
+  const getProgramName = (programId) => {
+    const program = programs.find(p => p.id == programId);
+    return program?.program_name || "N/A";
+  };
+
+  const getSectionName = (sectionId) => {
+    const section = sections.find(s => s.id == sectionId);
+    return section ? `${section.section_code} - ${section.course_code}` : "N/A";
   };
 
   if (loading) {
@@ -177,6 +262,82 @@ export default function Students() {
           </button>
         </div>
 
+        {/* Filters Bar */}
+        <div className="bg-white rounded-2xl border shadow-sm p-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* Search Input */}
+            <div className="relative">
+              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search students..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Campus Filter */}
+            <select
+              value={selectedCampus}
+              onChange={(e) => setSelectedCampus(e.target.value)}
+              className="border rounded-lg px-4 py-2"
+            >
+              <option value="">All Campuses</option>
+              {campuses.map((campus) => (
+                <option key={campus.id} value={campus.id}>
+                  {campus.campus_name}
+                </option>
+              ))}
+            </select>
+
+            {/* Program Filter */}
+            <select
+              value={selectedProgram}
+              onChange={(e) => setSelectedProgram(e.target.value)}
+              className="border rounded-lg px-4 py-2"
+              disabled={!selectedCampus}
+            >
+              <option value="">All Programs</option>
+              {filteredPrograms.map((program) => (
+                <option key={program.id} value={program.id}>
+                  {program.program_name}
+                </option>
+              ))}
+            </select>
+
+            {/* Section Filter */}
+            <select
+              value={selectedSection}
+              onChange={(e) => setSelectedSection(e.target.value)}
+              className="border rounded-lg px-4 py-2"
+              disabled={!selectedProgram}
+            >
+              <option value="">All Sections</option>
+              {filteredSections.map((section) => (
+                <option key={section.id} value={section.id}>
+                  {section.section_code} - {section.course_code}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Filter Stats */}
+          <div className="mt-3 flex justify-between items-center">
+            <div className="text-sm text-gray-500">
+              Showing {filteredStudents.length} of {students.length} students
+            </div>
+            {(selectedCampus || selectedProgram || selectedSection || searchTerm) && (
+              <button
+                onClick={clearFilters}
+                className="text-sm text-red-600 hover:text-red-800"
+              >
+                Clear All Filters
+              </button>
+            )}
+          </div>
+        </div>
+
         {/* Students Table */}
         <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
@@ -187,54 +348,60 @@ export default function Students() {
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Name</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Email</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Contact</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Campus</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Program</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Section</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {students.map((student) => {
-                  const campus = campuses.find(c => c.id == student.campus_id);
-                  return (
-                    <tr key={student.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 text-sm">{student.student_id}</td>
-                      <td className="px-6 py-4 text-sm">
-                        {student.first_name} {student.last_name}
-                      </td>
-                      <td className="px-6 py-4 text-sm">{student.email}</td>
-                      <td className="px-6 py-4 text-sm">{student.contact}</td>
-                      <td className="px-6 py-4 text-sm">
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
-                          {campus?.campus_name || "N/A"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => navigate(`/admin/students/${student.id}`)}
-                            className="text-blue-600 hover:text-blue-800"
-                          >
-                            <FaEye />
-                          </button>
-                          <button
-                            onClick={() => openEditModal(student)}
-                            className="text-green-600 hover:text-green-800"
-                          >
-                            <FaEdit />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(student.id)}
-                            className="text-red-600 hover:text-red-800"
-                          >
-                            <FaTrash />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-                {students.length === 0 && (
+                {filteredStudents.map((student) => (
+                  <tr key={student.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 text-sm font-medium">{student.student_id}</td>
+                    <td className="px-6 py-4 text-sm">
+                      {student.first_name} {student.last_name}
+                    </td>
+                    <td className="px-6 py-4 text-sm">{student.email}</td>
+                    <td className="px-6 py-4 text-sm">{student.contact}</td>
+                    <td className="px-6 py-4 text-sm">
+                      <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
+                        {getProgramName(student.program_id)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm">
+                      <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">
+                        {getSectionName(student.section_id)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => navigate(`/admin/students/${student.id}`)}
+                          className="text-blue-600 hover:text-blue-800"
+                          title="View"
+                        >
+                          <FaEye />
+                        </button>
+                        <button
+                          onClick={() => openEditModal(student)}
+                          className="text-green-600 hover:text-green-800"
+                          title="Edit"
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(student.id)}
+                          className="text-red-600 hover:text-red-800"
+                          title="Delete"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {filteredStudents.length === 0 && (
                   <tr>
-                    <td colSpan="6" className="text-center py-8 text-gray-500">
+                    <td colSpan="7" className="text-center py-8 text-gray-500">
                       No students found
                     </td>
                   </tr>
@@ -257,7 +424,7 @@ export default function Students() {
 
             <form onSubmit={handleSubmit} className="p-6">
               <div className="grid grid-cols-2 gap-4">
-                {/* Step 1: Select Campus */}
+                {/* Step 1: Campus */}
                 <div className="col-span-2">
                   <label className="block text-sm font-medium mb-1 text-blue-600">
                     Step 1: Select Campus *
@@ -271,7 +438,7 @@ export default function Students() {
                     className="w-full border rounded-lg px-3 py-2"
                     required
                   >
-                    <option value="">-- Select Campus --</option>
+                    <option value="">Select Campus</option>
                     {campuses.map((campus) => (
                       <option key={campus.id} value={campus.id}>
                         {campus.campus_name}
@@ -280,37 +447,59 @@ export default function Students() {
                   </select>
                 </div>
 
-                {/* Step 2: Select Program (based on campus) */}
+                {/* Step 2: Program */}
                 <div className="col-span-2">
                   <label className="block text-sm font-medium mb-1 text-green-600">
-                    Step 2: Select Program
+                    Step 2: Select Program *
                   </label>
                   <select
-                    value={formData.program_id}
-                    onChange={(e) => setFormData({ ...formData, program_id: e.target.value })}
+                    value={selectedProgram}
+                    onChange={(e) => {
+                      setSelectedProgram(e.target.value);
+                      setFormData({ ...formData, program_id: e.target.value });
+                    }}
                     className="w-full border rounded-lg px-3 py-2"
                     disabled={!selectedCampus}
+                    required
                   >
-                    <option value="">-- Select Program --</option>
+                    <option value="">Select Program</option>
                     {filteredPrograms.map((program) => (
                       <option key={program.id} value={program.id}>
                         {program.program_name}
                       </option>
                     ))}
                   </select>
-                  {!selectedCampus && (
-                    <p className="text-xs text-orange-500 mt-1">⚠ Please select a campus first</p>
-                  )}
-                  {selectedCampus && filteredPrograms.length === 0 && (
-                    <p className="text-xs text-orange-500 mt-1">⚠ No programs available for this campus</p>
-                  )}
                 </div>
 
-                {/* Step 3: Student Details */}
+                {/* Step 3: Section */}
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium mb-1 text-purple-600">
+                    Step 3: Select Section *
+                  </label>
+                  <select
+                    value={selectedSection}
+                    onChange={(e) => {
+                      setSelectedSection(e.target.value);
+                      setFormData({ ...formData, section_id: e.target.value });
+                    }}
+                    className="w-full border rounded-lg px-3 py-2"
+                    disabled={!selectedProgram}
+                    required
+                  >
+                    <option value="">Select Section</option>
+                    {filteredSections.map((section) => (
+                      <option key={section.id} value={section.id}>
+                        {section.section_code} - {section.course_code} ({section.schedule || "TBA"})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Step 4: Student Details */}
                 <div className="col-span-2">
                   <hr className="my-2" />
-                  <label className="block text-sm font-medium mb-1 text-purple-600">
-                    Step 3: Student Details
+                  <label className="block text-sm font-medium mb-1 text-orange-600">
+                    Step 4: Student Details
                   </label>
                 </div>
 
@@ -320,17 +509,6 @@ export default function Students() {
                     type="text"
                     value={formData.student_id}
                     onChange={(e) => setFormData({ ...formData, student_id: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">User ID *</label>
-                  <input
-                    type="number"
-                    value={formData.user_id}
-                    onChange={(e) => setFormData({ ...formData, user_id: e.target.value })}
                     className="w-full border rounded-lg px-3 py-2"
                     required
                   />
@@ -435,7 +613,7 @@ export default function Students() {
                 </button>
                 <button
                   type="submit"
-                  disabled={!selectedCampus}
+                  disabled={!selectedCampus || !selectedProgram || !selectedSection}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
                   {editingStudent ? "Update" : "Create"}

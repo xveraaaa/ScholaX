@@ -9,13 +9,13 @@ export default function Contact() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="bg-blue-900 text-white py-20">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+      <section className="pt-32 pb-20 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-center">
             Contact Us
           </h1>
 
-          <p className="text-xl max-w-3xl mx-auto">
+          <p className="text-xl max-w-5xl text-center">
             We'd love to hear from you. Reach out to us for inquiries,
             admissions assistance, and student services.
           </p>

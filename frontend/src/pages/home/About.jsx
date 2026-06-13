@@ -9,13 +9,13 @@ export default function About() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="bg-blue-900 text-white py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+      <section className="pt-32 pb-20 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-center">
             About ICCT
           </h1>
 
-          <p className="text-xl max-w-3xl">
+          <p className="text-xl max-w-5xl text-center">
             Providing quality education and preparing students for
             success through innovation, technology, and academic
             excellence.

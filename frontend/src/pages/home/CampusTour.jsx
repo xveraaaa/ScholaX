@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import PublicLayout from "../../layouts/HomeLayout";
 
-import bun from "../../assets/bun_06.png";
+import bun1 from "../../assets/home/bun_00.png";
+import bun2 from "../../assets/home/bun_01.png";
+import bun3 from "../../assets/home/bun_02.png";
+import bun4 from "../../assets/home/bun_03.png";
+import bun5 from "../../assets/home/bun_05.png";
+import bun6 from "../../assets/home/bun_06.png";
 
 export default function CampusTour() {
   useEffect(() => {
@@ -11,45 +16,45 @@ export default function CampusTour() {
   const places = [
     {
       title: "Main Library",
-      image: bun,
+      image: bun1,
     },
     {
       title: "Computer Laboratory",
       image:
-        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
+        bun2,
     },
     {
       title: "Student Center",
       image:
-        "https://images.unsplash.com/photo-1562774053-701939374585",
+        bun3,
     },
     {
       title: "Auditorium",
       image:
-        "https://images.unsplash.com/photo-1511578314322-379afb476865",
+        bun4,
     },
     {
       title: "Gymnasium",
       image:
-        "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b",
+        bun5,
     },
     {
       title: "Campus Grounds",
       image:
-        "https://images.unsplash.com/photo-1564981797816-1043664bf78d",
+        bun6,
     },
   ];
 
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="bg-blue-900 text-white py-20">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+      <section className="pt-32 pb-20 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-center">
             Campus Tour
           </h1>
 
-          <p className="text-xl max-w-3xl mx-auto">
+          <p className="text-xl max-w-5xl text-center">
             Explore our facilities and discover what makes ICCT
             an excellent place to learn, grow, and succeed.
           </p>

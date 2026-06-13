@@ -20,6 +20,8 @@ app.use("/api/enrollments", require("./routes/enrollment"));
 app.use("/api/grades", require("./routes/grade"));
 app.use("/api/attendance", require("./routes/attendance"));
 app.use("/api/dashboard", require("./routes/dashboard"));
+app.use("/api/campuses", require("./routes/campus"));
+app.use("/api/sections", require("./routes/sections"));
 
 app.get("/", (req, res) => {
   res.json({

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import PublicLayout from "../../layouts/HomeLayout";
+import { Link } from "react-router-dom";
 
 export default function Admissions() {
   useEffect(() => {
@@ -40,13 +41,13 @@ export default function Admissions() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="bg-blue-900 text-white py-20">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+      <section className="pt-32 pb-20 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+        <div className="max-w-5xl mx-auto px-6">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-center">
             Admissions
           </h1>
 
-          <p className="text-xl max-w-3xl mx-auto">
+          <p className="text-xl max-w-5xl text-center">
             Start your academic journey with ICCT and become part of a
             community committed to excellence and innovation.
           </p>
@@ -124,6 +125,7 @@ export default function Admissions() {
             quality education at ICCT.
           </p>
 
+          
           <button
             className="
               bg-blue-900
@@ -136,7 +138,11 @@ export default function Admissions() {
               transition
             "
           >
-            Apply Now
+            <Link
+            to="/apply-now"
+            >
+              Apply Now
+            </Link>
           </button>
         </div>
       </section>
