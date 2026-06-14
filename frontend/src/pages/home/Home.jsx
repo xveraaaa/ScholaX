@@ -1,450 +1,143 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AdminLayout from "../../layouts/AdminLayout";
-import api from "../../services/api";
-import toast from "react-hot-toast";
-import { FaEdit, FaTrash, FaEye, FaPlus } from "react-icons/fa";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
-export default function Students() {
-  const navigate = useNavigate();
-  const [students, setStudents] = useState([]);
-  const [campuses, setCampuses] = useState([]);
-  const [programs, setPrograms] = useState([]);
-  const [selectedCampus, setSelectedCampus] = useState("");
-  const [filteredPrograms, setFilteredPrograms] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [editingStudent, setEditingStudent] = useState(null);
-  const [formData, setFormData] = useState({
-    user_id: "",
-    student_id: "",
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    email: "",
-    gender: "male",
-    date_of_birth: "",
-    contact: "",
-    address: "",
-    campus_id: "",
-    program_id: ""
-  });
+import PublicLayout from "../../layouts/HomeLayout";
+import loginBg from "../../assets/login_bg.jpeg";
 
+export default function Home() {
   useEffect(() => {
-    document.title = "Students | Admin";
-    fetchStudents();
-    fetchCampuses();
-    fetchPrograms();
+    document.title = "Home";
+    window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    // Filter programs based on selected campus
-    if (selectedCampus) {
-      const filtered = programs.filter(p => p.campus_id == selectedCampus);
-      setFilteredPrograms(filtered);
-    } else {
-      setFilteredPrograms([]);
-    }
-    setFormData(prev => ({ ...prev, program_id: "" }));
-  }, [selectedCampus, programs]);
-
-  const fetchStudents = async () => {
-    try {
-      const res = await api.get("/students");
-      setStudents(res.data);
-    } catch (error) {
-      toast.error("Failed to fetch students");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchCampuses = async () => {
-    try {
-      const res = await api.get("/campuses");
-      setCampuses(res.data);
-    } catch (error) {
-      console.error("Failed to fetch campuses", error);
-    }
-  };
-
-  const fetchPrograms = async () => {
-    try {
-      const res = await api.get("/programs");
-      setPrograms(res.data);
-    } catch (error) {
-      console.error("Failed to fetch programs", error);
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (editingStudent) {
-        await api.put(`/students/${editingStudent.id}`, formData);
-        toast.success("Student updated successfully");
-      } else {
-        await api.post("/students", formData);
-        toast.success("Student created successfully");
-      }
-      setShowModal(false);
-      resetForm();
-      fetchStudents();
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Operation failed");
-    }
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this student?")) {
-      try {
-        await api.delete(`/students/${id}`);
-        toast.success("Student deleted successfully");
-        fetchStudents();
-      } catch (error) {
-        toast.error("Failed to delete student");
-      }
-    }
-  };
-
-  const resetForm = () => {
-    setEditingStudent(null);
-    setSelectedCampus("");
-    setFormData({
-      user_id: "",
-      student_id: "",
-      first_name: "",
-      middle_name: "",
-      last_name: "",
-      email: "",
-      gender: "male",
-      date_of_birth: "",
-      contact: "",
-      address: "",
-      campus_id: "",
-      program_id: ""
-    });
-  };
-
-  const openCreateModal = () => {
-    resetForm();
-    setShowModal(true);
-  };
-
-  const openEditModal = (student) => {
-    setEditingStudent(student);
-    setSelectedCampus(student.campus_id || "");
-    setFormData({
-      user_id: student.user_id,
-      student_id: student.student_id,
-      first_name: student.first_name,
-      middle_name: student.middle_name || "",
-      last_name: student.last_name,
-      email: student.email,
-      gender: student.gender,
-      date_of_birth: student.date_of_birth.split('T')[0],
-      contact: student.contact,
-      address: student.address || "",
-      campus_id: student.campus_id || "",
-      program_id: student.program_id || ""
-    });
-    setShowModal(true);
-  };
-
-  if (loading) {
-    return (
-      <AdminLayout>
-        <div className="flex h-[70vh] items-center justify-center">
-          <div className="text-center">
-            <p className="text-lg font-medium">Loading Students...</p>
-          </div>
-        </div>
-      </AdminLayout>
-    );
-  }
-
   return (
-    <AdminLayout>
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-slate-900">Students</h1>
-          <button
-            onClick={openCreateModal}
-            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            <FaPlus /> Add Student
-          </button>
-        </div>
+    <PublicLayout>
+      {/* Hero Section */}
+      <section
+        className="relative min-h-screen bg-cover bg-center"
+        style={{
+          backgroundImage: `url(${loginBg})`,
+        }}
+      >
+        <div className="absolute inset-0 bg-black/60"></div>
 
-        {/* Students Table */}
-        <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b">
-                <tr>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">ID</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Name</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Email</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Contact</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Campus</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {students.map((student) => {
-                  const campus = campuses.find(c => c.id == student.campus_id);
-                  return (
-                    <tr key={student.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 text-sm">{student.student_id}</td>
-                      <td className="px-6 py-4 text-sm">
-                        {student.first_name} {student.last_name}
-                      </td>
-                      <td className="px-6 py-4 text-sm">{student.email}</td>
-                      <td className="px-6 py-4 text-sm">{student.contact}</td>
-                      <td className="px-6 py-4 text-sm">
-                        <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">
-                          {campus?.campus_name || "N/A"}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => navigate(`/admin/students/${student.id}`)}
-                            className="text-blue-600 hover:text-blue-800"
-                          >
-                            <FaEye />
-                          </button>
-                          <button
-                            onClick={() => openEditModal(student)}
-                            className="text-green-600 hover:text-green-800"
-                          >
-                            <FaEdit />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(student.id)}
-                            className="text-red-600 hover:text-red-800"
-                          >
-                            <FaTrash />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-                {students.length === 0 && (
-                  <tr>
-                    <td colSpan="6" className="text-center py-8 text-gray-500">
-                      No students found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+        <div className="relative max-w-7xl mx-auto px-6 min-h-screen flex items-center">
+          <div className="max-w-3xl">
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+              Welcome to ScholaX
+            </h1>
+
+            <p className="text-lg md:text-2xl text-gray-200 mb-8">
+              Empowering future innovators through quality education,
+              technology, and academic excellence.
+            </p>
+
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/programs"
+                className="bg-white text-blue-900 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition"
+              >
+                Explore Programs
+              </Link>
+
+              <Link
+                to="/admissions"
+                className="border border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition"
+              >
+                Apply Now
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b">
-              <h2 className="text-2xl font-bold">
-                {editingStudent ? "Edit Student" : "Add New Student"}
-              </h2>
+      {/* Statistics */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-4 gap-8 text-center">
+            <div>
+              <h2 className="text-4xl font-bold text-blue-900">10,000+</h2>
+              <p className="text-gray-600 mt-2">Students</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6">
-              <div className="grid grid-cols-2 gap-4">
-                {/* Step 1: Select Campus */}
-                <div className="col-span-2">
-                  <label className="block text-sm font-medium mb-1 text-blue-600">
-                    Step 1: Select Campus *
-                  </label>
-                  <select
-                    value={selectedCampus}
-                    onChange={(e) => {
-                      setSelectedCampus(e.target.value);
-                      setFormData({ ...formData, campus_id: e.target.value });
-                    }}
-                    className="w-full border rounded-lg px-3 py-2"
-                    required
-                  >
-                    <option value="">-- Select Campus --</option>
-                    {campuses.map((campus) => (
-                      <option key={campus.id} value={campus.id}>
-                        {campus.campus_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+            <div>
+              <h2 className="text-4xl font-bold text-blue-900">20+</h2>
+              <p className="text-gray-600 mt-2">Programs</p>
+            </div>
 
-                {/* Step 2: Select Program (based on campus) */}
-                <div className="col-span-2">
-                  <label className="block text-sm font-medium mb-1 text-green-600">
-                    Step 2: Select Program
-                  </label>
-                  <select
-                    value={formData.program_id}
-                    onChange={(e) => setFormData({ ...formData, program_id: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    disabled={!selectedCampus}
-                  >
-                    <option value="">-- Select Program --</option>
-                    {filteredPrograms.map((program) => (
-                      <option key={program.id} value={program.id}>
-                        {program.program_name}
-                      </option>
-                    ))}
-                  </select>
-                  {!selectedCampus && (
-                    <p className="text-xs text-orange-500 mt-1">⚠ Please select a campus first</p>
-                  )}
-                  {selectedCampus && filteredPrograms.length === 0 && (
-                    <p className="text-xs text-orange-500 mt-1">⚠ No programs available for this campus</p>
-                  )}
-                </div>
+            <div>
+              <h2 className="text-4xl font-bold text-blue-900">8</h2>
+              <p className="text-gray-600 mt-2">Campuses</p>
+            </div>
 
-                {/* Step 3: Student Details */}
-                <div className="col-span-2">
-                  <hr className="my-2" />
-                  <label className="block text-sm font-medium mb-1 text-purple-600">
-                    Step 3: Student Details
-                  </label>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Student ID *</label>
-                  <input
-                    type="text"
-                    value={formData.student_id}
-                    onChange={(e) => setFormData({ ...formData, student_id: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">User ID *</label>
-                  <input
-                    type="number"
-                    value={formData.user_id}
-                    onChange={(e) => setFormData({ ...formData, user_id: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">First Name *</label>
-                  <input
-                    type="text"
-                    value={formData.first_name}
-                    onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Middle Name</label>
-                  <input
-                    type="text"
-                    value={formData.middle_name}
-                    onChange={(e) => setFormData({ ...formData, middle_name: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Last Name *</label>
-                  <input
-                    type="text"
-                    value={formData.last_name}
-                    onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Email *</label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Gender *</label>
-                  <select
-                    value={formData.gender}
-                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    required
-                  >
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Date of Birth *</label>
-                  <input
-                    type="date"
-                    value={formData.date_of_birth}
-                    onChange={(e) => setFormData({ ...formData, date_of_birth: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-1">Contact *</label>
-                  <input
-                    type="text"
-                    value={formData.contact}
-                    onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    required
-                  />
-                </div>
-
-                <div className="col-span-2">
-                  <label className="block text-sm font-medium mb-1">Address</label>
-                  <textarea
-                    value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    className="w-full border rounded-lg px-3 py-2"
-                    rows="2"
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3 mt-6 pt-4 border-t">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="px-4 py-2 border rounded-lg hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={!selectedCampus}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
-                >
-                  {editingStudent ? "Update" : "Create"}
-                </button>
-              </div>
-            </form>
+            <div>
+              <h2 className="text-4xl font-bold text-blue-900">95%</h2>
+              <p className="text-gray-600 mt-2">Graduate Employability</p>
+            </div>
           </div>
         </div>
-      )}
-    </AdminLayout>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="bg-gray-100 py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl font-bold text-center text-blue-900 mb-12">
+            Why Choose ICCT?
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-2xl shadow-md">
+              <h3 className="text-xl font-bold mb-4">
+                Quality Education
+              </h3>
+
+              <p className="text-gray-600">
+                Industry-relevant programs designed for modern careers.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl shadow-md">
+              <h3 className="text-xl font-bold mb-4">
+                Modern Facilities
+              </h3>
+
+              <p className="text-gray-600">
+                Access to laboratories, libraries, and learning spaces.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl shadow-md">
+              <h3 className="text-xl font-bold mb-4">
+                Student Success
+              </h3>
+
+              <p className="text-gray-600">
+                Support services that help students achieve their goals.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 bg-blue-900 text-white">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold mb-4">
+            Ready to Begin Your Journey?
+          </h2>
+
+          <p className="text-lg mb-8">
+            Join ICCT and take the next step toward your future.
+          </p>
+
+          <Link
+            to="/admissions"
+            className="inline-block bg-white text-blue-900 px-8 py-4 rounded-lg font-semibold"
+          >
+            Apply Today
+          </Link>
+        </div>
+      </section>
+    </PublicLayout>
   );
 }

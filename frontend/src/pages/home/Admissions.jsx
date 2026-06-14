@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import PublicLayout from "../../layouts/HomeLayout";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export default function Admissions() {
   useEffect(() => {
     document.title = "Admissions";
+    window.scrollTo(0, 0);
   }, []);
-
+  const navigate = useNavigate();
   const requirements = [
     "High School Report Card",
     "Birth Certificate",
@@ -125,8 +126,10 @@ export default function Admissions() {
             quality education at ICCT.
           </p>
 
-          
+
+            
           <button
+           onClick={() => navigate("/apply-now")}
             className="
               bg-blue-900
               text-white
@@ -137,12 +140,8 @@ export default function Admissions() {
               hover:bg-blue-800
               transition
             "
-          >
-            <Link
-            to="/apply-now"
             >
               Apply Now
-            </Link>
           </button>
         </div>
       </section>

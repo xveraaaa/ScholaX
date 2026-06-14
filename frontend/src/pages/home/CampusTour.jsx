@@ -11,6 +11,7 @@ import bun6 from "../../assets/home/bun_06.png";
 export default function CampusTour() {
   useEffect(() => {
     document.title = "Campus Tour";
+    window.scrollTo(0, 0);
   }, []);
 
   const places = [

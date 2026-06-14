@@ -3,13 +3,14 @@ const db = require('../db');
 const authMiddleware = require('../middleware/authMiddleware');
 const authorizeRoles = require('../middleware/authorizeRoles');
 
-// GET all courses (everyone logged in)
+// GET all courses
 router.get('/', authMiddleware, (req, res) => {
   const sql = `
-    SELECT c.*, p.program_name, t.first_name, t.last_name 
+    SELECT c.*, p.program_name, t.first_name, t.last_name, camp.campus_name
     FROM courses c
     LEFT JOIN programs p ON c.program_id = p.id
     LEFT JOIN teachers t ON c.teacher_id = t.id
+    LEFT JOIN campuses camp ON c.campus_id = camp.id
     ORDER BY c.course_code ASC
   `;
   
@@ -22,10 +23,11 @@ router.get('/', authMiddleware, (req, res) => {
 // GET single course
 router.get('/:id', authMiddleware, (req, res) => {
   const sql = `
-    SELECT c.*, p.program_name, t.first_name, t.last_name 
+    SELECT c.*, p.program_name, t.first_name, t.last_name, camp.campus_name
     FROM courses c
     LEFT JOIN programs p ON c.program_id = p.id
     LEFT JOIN teachers t ON c.teacher_id = t.id
+    LEFT JOIN campuses camp ON c.campus_id = camp.id
     WHERE c.id = ?
   `;
   
@@ -36,8 +38,8 @@ router.get('/:id', authMiddleware, (req, res) => {
   });
 });
 
-// CREATE course (Admin only)
-router.post('/', authMiddleware, authorizeRoles('admin'), (req, res) => {
+// CREATE course (Admin only) - without semester
+router.post('/', authMiddleware, authorizeRoles('ADMIN'), (req, res) => {
   const {
     course_code,
     course_name,
@@ -45,16 +47,14 @@ router.post('/', authMiddleware, authorizeRoles('admin'), (req, res) => {
     credits,
     program_id,
     teacher_id,
-    academic_period,
+    campus_id,
     year_level,
-    school_year,
-    schedule,
-    room,
     status
   } = req.body;
 
-  if (!course_code || !course_name || !credits || !academic_period || !school_year) {
-    return res.status(400).json({ message: 'Required fields missing' });
+  // Check required fields
+  if (!course_code || !course_name || !credits) {
+    return res.status(400).json({ message: 'Required fields missing: course_code, course_name, credits' });
   }
 
   // Check if course_code exists
@@ -65,19 +65,22 @@ router.post('/', authMiddleware, authorizeRoles('admin'), (req, res) => {
     const sql = `
       INSERT INTO courses (
         course_code, course_name, description, credits, program_id, 
-        teacher_id, academic_period, year_level, school_year, schedule, room, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        teacher_id, campus_id, year_level, status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     
-    db.query(sql, [course_code, course_name, description, credits, program_id, teacher_id, academic_period, year_level, school_year, schedule, room, status || 'active'], (err, result) => {
+    db.query(sql, [
+      course_code, course_name, description || null, credits, program_id || null, 
+      teacher_id || null, campus_id || null, year_level || 1, status || 'active'
+    ], (err, result) => {
       if (err) return res.status(500).json({ message: err.message });
       res.status(201).json({ message: 'Course created successfully', id: result.insertId });
     });
   });
 });
 
-// UPDATE course (Admin only)
-router.put('/:id', authMiddleware, authorizeRoles('admin'), (req, res) => {
+// UPDATE course (Admin only) - without semester
+router.put('/:id', authMiddleware, authorizeRoles('ADMIN'), (req, res) => {
   const {
     course_code,
     course_name,
@@ -85,23 +88,22 @@ router.put('/:id', authMiddleware, authorizeRoles('admin'), (req, res) => {
     credits,
     program_id,
     teacher_id,
-    academic_period,
+    campus_id,
     year_level,
-    school_year,
-    schedule,
-    room,
     status
   } = req.body;
 
   const sql = `
     UPDATE courses 
     SET course_code = ?, course_name = ?, description = ?, credits = ?, 
-        program_id = ?, teacher_id = ?, academic_period = ?, year_level = ?, 
-        school_year = ?, schedule = ?, room = ?, status = ?
+        program_id = ?, teacher_id = ?, campus_id = ?, year_level = ?, status = ?
     WHERE id = ?
   `;
   
-  db.query(sql, [course_code, course_name, description, credits, program_id, teacher_id, academic_period, year_level, school_year, schedule, room, status, req.params.id], (err, result) => {
+  db.query(sql, [
+    course_code, course_name, description, credits, program_id, 
+    teacher_id, campus_id, year_level, status, req.params.id
+  ], (err, result) => {
     if (err) return res.status(500).json({ message: err.message });
     if (result.affectedRows === 0) return res.status(404).json({ message: 'Course not found' });
     res.json({ message: 'Course updated successfully' });
@@ -109,7 +111,7 @@ router.put('/:id', authMiddleware, authorizeRoles('admin'), (req, res) => {
 });
 
 // DELETE course (Admin only)
-router.delete('/:id', authMiddleware, authorizeRoles('admin'), (req, res) => {
+router.delete('/:id', authMiddleware, authorizeRoles('ADMIN'), (req, res) => {
   // Check if course has enrollments
   db.query('SELECT * FROM enrollments WHERE course_id = ?', [req.params.id], (err, result) => {
     if (err) return res.status(500).json({ message: err.message });
@@ -130,7 +132,7 @@ router.get('/program/:program_id', authMiddleware, (req, res) => {
   const sql = `
     SELECT * FROM courses 
     WHERE program_id = ? 
-    ORDER BY year_level, trimester
+    ORDER BY year_level, course_code
   `;
   
   db.query(sql, [req.params.program_id], (err, results) => {
@@ -139,15 +141,17 @@ router.get('/program/:program_id', authMiddleware, (req, res) => {
   });
 });
 
-// GET courses by teacher
-router.get('/teacher/:teacher_id', authMiddleware, (req, res) => {
+// GET courses by campus
+router.get('/campus/:campus_id', authMiddleware, (req, res) => {
   const sql = `
-    SELECT * FROM courses 
-    WHERE teacher_id = ? 
-    ORDER BY school_year, academic_period
+    SELECT c.*, p.program_name
+    FROM courses c
+    LEFT JOIN programs p ON c.program_id = p.id
+    WHERE c.campus_id = ?
+    ORDER BY c.course_code ASC
   `;
   
-  db.query(sql, [req.params.teacher_id], (err, results) => {
+  db.query(sql, [req.params.campus_id], (err, results) => {
     if (err) return res.status(500).json({ message: err.message });
     res.json(results);
   });

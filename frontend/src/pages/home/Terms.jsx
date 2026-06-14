@@ -5,6 +5,7 @@ import { useEffect } from "react";
 export default function Terms() {
   useEffect(() => {
       document.title = "Terms & Conditions";
+      window.scrollTo(0, 0);
     },[])
   return (
     <>

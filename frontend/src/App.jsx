@@ -21,6 +21,10 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import Students from "./pages/admin/Students";
 import Campuses from "./pages/admin/Campus";
 import AdminPrograms from "./pages/admin/Programs";
+import Teachers from "./pages/admin/Teachers";
+import Courses from "./pages/admin/Courses";
+import Enrollments from "./pages/admin/Enrollment";
+
 
 // import FacultyDashboard from "./pages/faculty/Dashboard";
 // import StudentDashboard from "./pages/student/Dashboard";
@@ -53,10 +57,55 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/admin/students" element={<Students />} />
-          <Route path="/admin/campuses" element={<Campuses />} />
-          <Route path="/admin/programs" element={<AdminPrograms />} />
+          <Route
+            path="/admin/students"
+            element={
+              <ProtectedRoute allowedRole="ADMIN">
+                <Students />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/campuses"
+            element={
+              <ProtectedRoute allowedRole="ADMIN">
+                <Campuses />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/programs"
+            element={
+              <ProtectedRoute allowedRole="ADMIN">
+                <AdminPrograms />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/teachers"
+            element={
+              <ProtectedRoute allowedRole="ADMIN">
+                <Teachers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/courses"
+            element={
+              <ProtectedRoute allowedRole="ADMIN">
+                <Courses />
+              </ProtectedRoute>
+            }
+          />
 
+          <Route
+            path="/admin/enrollments"
+            element={
+              <ProtectedRoute allowedRole="ADMIN">
+                <Enrollments />
+              </ProtectedRoute>
+            }
+          />
 
 
 

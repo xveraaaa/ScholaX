@@ -4,6 +4,7 @@ import PublicLayout from "../../layouts/HomeLayout";
 export default function Contact() {
   useEffect(() => {
     document.title = "Contact Us";
+    window.scrollTo(0, 0);
   }, []);
 
   return (

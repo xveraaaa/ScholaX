@@ -6,6 +6,7 @@ export default function News() {
   // const [news, setNews] = useState([]);
   useEffect(() => {
     document.title = "News & Announcements";
+    window.scrollTo(0, 0);
     api.get("/news").then((res) => {
     setNews(res.data);
   });

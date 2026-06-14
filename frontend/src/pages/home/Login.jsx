@@ -87,32 +87,7 @@ export default function Login() {
                 </p>
 
                 <div className="flex gap-8 mt-10">
-                  <div>
-                    <h3 className="text-4xl font-bold text-white">
-                      10K+
-                    </h3>
-                    <p className="text-gray-400">
-                      Students
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="text-4xl font-bold text-white">
-                      20+
-                    </h3>
-                    <p className="text-gray-400">
-                      Programs
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="text-4xl font-bold text-white">
-                      95%
-                    </h3>
-                    <p className="text-gray-400">
-                      Employability
-                    </p>
-                  </div>
+                  
                 </div>
               </div>
 

@@ -9,6 +9,7 @@ export default function ForgotPassword() {
 
   useEffect(() => {
     document.title = "Forgot Password";
+    window.scrollTo(0, 0);
   }, []);
 
   const handleSubmit = async (e) => {

@@ -4,6 +4,7 @@ import PublicLayout from "../../layouts/HomeLayout";
 export default function FAQ() {
   useEffect(() => {
     document.title = "Frequently Asked Questions";
+    window.scrollTo(0, 0);
   }, []);
 
   const faqs = [

@@ -4,6 +4,7 @@ import PublicLayout from "../../layouts/HomeLayout";
 export default function Programs() {
   useEffect(() => {
     document.title = "Programs";
+    window.scrollTo(0, 0);
   }, []);
 
   const programs = [
