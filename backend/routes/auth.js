@@ -55,9 +55,9 @@ router.post('/register', async (req, res) => {
           
           const userId = userResult.insertId;
           
-          // Create profile based on role
+          // create profile based on role
           if (role === 'student') {
-            // Check required student fields
+            // check required student fields
             if (!student_id || !first_name || !last_name || !email || !gender || !date_of_birth || !contact) {
               return res.status(400).json({ message: 'Missing required student fields' });
             }

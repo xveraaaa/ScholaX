@@ -8,7 +8,7 @@ router.get('/admin', authMiddleware, authorizeRoles('ADMIN'), (req, res) => {
   const queries = {
     // Stats - removed status column
     stats: `
-      SELECT 
+      SELECT  
         (SELECT COUNT(*) FROM students) as students,
         (SELECT COUNT(*) FROM teachers) as teachers,
         (SELECT COUNT(*) FROM courses) as courses,
