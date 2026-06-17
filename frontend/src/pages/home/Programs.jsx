@@ -18,32 +18,39 @@ export default function Programs() {
       description:
         "Covers algorithms, artificial intelligence, software engineering, and computing theory.",
     },
-    {
-      title: "BS Business Administration",
-      description:
-        "Develops leadership, management, entrepreneurship, and business skills.",
-    },
+    
   ];
 
   return (
     <PublicLayout>
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
-        <div className="max-w-5xl mx-auto px-6">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-center">
+
+      
+      <section className="pt-32 pb-20 bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1d4ed8] relative overflow-hidden text-white">
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <h1
+            className="
+              text-6xl md:text-7xl font-black text-white
+              animate-[fadeUp_1s_ease-out]
+            "
+            style={{
+              textShadow:
+                "0 0 15px rgba(255,255,255,.8), 0 0 35px rgba(255,255,255,.4)",
+            }}
+          >
             Academic Programs
           </h1>
 
-          <p className="text-xl max-w-5xl text-center">
-            Explore our degree programs designed to prepare students
-            for successful careers and lifelong learning.
+          <p className="mt-4 text-xl text-white/90 drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">
+            Explore our degree programs designed to prepare students for
+            successful careers and lifelong learning.
           </p>
         </div>
       </section>
 
       {/* Programs */}
       <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {programs.map((program, index) => (
             <div
               key={index}

@@ -3,6 +3,7 @@ import PublicLayout from "../../layouts/HomeLayout";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export default function Admissions() {
+  const year = new Date().getFullYear();
   useEffect(() => {
     document.title = "Admissions";
     window.scrollTo(0, 0);
@@ -42,15 +43,27 @@ export default function Admissions() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
-        <div className="max-w-5xl mx-auto px-6">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-center">
-            Admissions
+      <section className="pt-32 pb-24 bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1d4ed8] relative overflow-hidden text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.15),transparent_50%)]"></div>
+
+        <div className="relative max-w-5xl mx-auto px-6 text-center">
+          <span className="inline-block px-4 py-2 rounded-full bg-white/10 border border-white/20 mb-4">
+            Admissions {year}
+          </span>
+
+          <h1
+            className="text-5xl md:text-7xl font-black"
+            style={{
+              textShadow:
+                "0 0 15px rgba(255,255,255,.8), 0 0 35px rgba(255,255,255,.4)",
+            }}
+          >
+            Start Your Journey
           </h1>
 
-          <p className="text-xl max-w-5xl text-center">
-            Start your academic journey with ICCT and become part of a
-            community committed to excellence and innovation.
+          <p className="mt-6 text-xl text-slate-200 max-w-3xl mx-auto">
+            Become part of a community dedicated to academic excellence,
+            innovation, and career success.
           </p>
         </div>
       </section>
@@ -131,14 +144,19 @@ export default function Admissions() {
           <button
            onClick={() => navigate("/apply-now")}
             className="
+              inline-block
               bg-blue-900
               text-white
               px-8
-              py-4
+              py-3
               rounded-lg
               font-semibold
               hover:bg-blue-800
-              transition
+              hover:scale-105
+              transition-all
+              duration-300
+              shadow-lg
+              hover:shadow-blue-500/30
             "
             >
               Apply Now

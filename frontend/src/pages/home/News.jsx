@@ -1,15 +1,14 @@
 import { useEffect } from "react";
 import PublicLayout from "../../layouts/HomeLayout";
-import api from "../../services/api"
+import api from "../../services/api";
 
 export default function News() {
-  // const [news, setNews] = useState([]);
   useEffect(() => {
     document.title = "News & Announcements";
     window.scrollTo(0, 0);
     api.get("/news").then((res) => {
-    setNews(res.data);
-  });
+      // setNews(res.data);
+    });
   }, []);
 
   const news = [
@@ -39,13 +38,25 @@ export default function News() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-gradient-to-r from-blue-900 to-blue-700 text-white">
-        <div className="max-w-5xl mx-auto px-6">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-center">
+      <section className="pt-32 pb-20 bg-gradient-to-br from-[#020617] via-[#0f172a] to-[#1d4ed8] relative overflow-hidden text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.15),transparent_50%)]"></div>
+
+        <div className="relative max-w-5xl mx-auto px-6 text-center">
+          <span className="inline-block px-4 py-2 rounded-full bg-white/10 border border-white/20 mb-4">
+            Latest Updates
+          </span>
+
+          <h1
+            className="text-5xl md:text-7xl font-black"
+            style={{
+              textShadow:
+                "0 0 15px rgba(255,255,255,.7), 0 0 30px rgba(255,255,255,.3)",
+            }}
+          >
             News & Announcements
           </h1>
 
-          <p className="text-xl max-w-5xl text-center">
+          <p className="mt-6 text-xl text-slate-200 max-w-3xl mx-auto">
             Stay informed about important announcements, events,
             academic updates, and campus activities.
           </p>
