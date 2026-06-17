@@ -65,9 +65,7 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
-            <span className="inline-block px-4 py-2 rounded-full bg-blue-100 text-blue-900 text-sm font-semibold mb-4">
-              ICCT by the Numbers
-            </span>
+            
             <h2 className="text-4xl font-bold text-blue-900">
               Our Impact in Numbers
             </h2>
