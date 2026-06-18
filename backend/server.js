@@ -12,6 +12,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/applications", require("./routes/application"));
 app.use("/api/students", require("./routes/student"));
 app.use("/api/programs", require("./routes/program"));
 app.use("/api/teachers", require("./routes/teacher"));

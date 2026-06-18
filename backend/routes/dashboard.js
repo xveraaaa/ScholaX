@@ -127,6 +127,38 @@ router.get('/admin', authMiddleware, authorizeRoles('ADMIN'), (req, res) => {
   });
 });
 
+router.get("/admin/applications", async (req, res) => {
+  try {
+    const [applications] = await db.query(
+      `SELECT 
+        a.*,
+        CASE 
+          WHEN a.status = 'pending' THEN 'bg-yellow-100 text-yellow-800'
+          WHEN a.status = 'reviewed' THEN 'bg-blue-100 text-blue-800'
+          WHEN a.status = 'accepted' THEN 'bg-green-100 text-green-800'
+          WHEN a.status = 'rejected' THEN 'bg-red-100 text-red-800'
+        END as status_color,
+        TIMESTAMPDIFF(DAY, a.created_at, NOW()) as days_pending
+      FROM applications a
+      ORDER BY 
+        FIELD(a.status, 'pending', 'reviewed', 'accepted', 'rejected'),
+        a.created_at DESC`
+    );
+    
+    res.json({
+      success: true,
+      data: applications
+    });
+  } catch (error) {
+    console.error("Error fetching applications:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch applications"
+    });
+  }
+});
+
+
 // FACULTY DASHBOARD
 router.get('/faculty', authMiddleware, authorizeRoles('FACULTY'), (req, res) => {
   // Get teacher id from user id

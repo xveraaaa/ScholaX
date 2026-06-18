@@ -112,7 +112,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-700 mt-10 pt-6 text-center text-gray-400 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p>© {year} ICCT Colleges. All rights reserved.</p>
+          <p>© {year} V. All rights reserved.</p>
           <p className="text-sm">Made with ❤️ </p>
         </div>
       </div>

@@ -4,7 +4,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const authorizeRoles = require('../middleware/authorizeRoles');
 
 // GET all grades (Admin & Teacher)
-router.get('/', authMiddleware, authorizeRoles('admin', 'teacher'), (req, res) => {
+router.get('/', authMiddleware, authorizeRoles('admin'), (req, res) => {
   const sql = `
     SELECT g.*, 
            s.student_id, s.first_name as student_first, s.last_name as student_last,
@@ -60,7 +60,7 @@ router.get('/student/:student_id', authMiddleware, (req, res) => {
 });
 
 // GET grades by course (Teacher sees their course grades)
-router.get('/course/:course_id', authMiddleware, authorizeRoles('admin', 'teacher'), (req, res) => {
+router.get('/course/:course_id', authMiddleware, authorizeRoles('admin'), (req, res) => {
   const sql = `
     SELECT g.*, 
            s.student_id, s.first_name, s.last_name,
@@ -99,7 +99,7 @@ router.get('/:id', authMiddleware, (req, res) => {
 });
 
 // CREATE grade (Teacher only)
-router.post('/', authMiddleware, authorizeRoles('admin', 'teacher'), (req, res) => {
+router.post('/', authMiddleware, authorizeRoles('admin'), (req, res) => {
   const { enrollment_id, grade_type, score, max_score, percentage, remarks } = req.body;
 
   if (!enrollment_id || !grade_type || !score || !max_score || !percentage) {
@@ -130,7 +130,7 @@ router.post('/', authMiddleware, authorizeRoles('admin', 'teacher'), (req, res) 
 });
 
 // UPDATE grade (Teacher only)
-router.put('/:id', authMiddleware, authorizeRoles('admin', 'teacher'), (req, res) => {
+router.put('/:id', authMiddleware, authorizeRoles('admin'), (req, res) => {
   const { score, max_score, percentage, remarks } = req.body;
 
   const sql = `

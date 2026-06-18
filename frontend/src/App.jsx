@@ -10,6 +10,7 @@ import News from "./pages/home/News";
 import Privacy from "./pages/home/Privacy";
 import Terms from "./pages/home/Terms";
 import Admissions from "./pages/home/Admissions";
+import ApplyNow from "./pages/home/ApplyNow";
 import Login from "./pages/home/Login";
 import ForgotPassword from "./pages/home/ForgotPassword";
 
@@ -46,6 +47,7 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/admissions" element={<Admissions />} />
+          <Route path="/apply-now" element={<ApplyNow />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
 

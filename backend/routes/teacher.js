@@ -5,7 +5,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const authorizeRoles = require('../middleware/authorizeRoles');
 
 // GET all teachers
-router.get('/', authMiddleware, authorizeRoles('ADMIN', 'FACULTY'), (req, res) => {
+router.get('/', authMiddleware, authorizeRoles('ADMIN'), (req, res) => {
   const sql = `
     SELECT t.*, u.username, c.campus_name
     FROM teachers t
@@ -87,10 +87,10 @@ router.post('/', authMiddleware, authorizeRoles('ADMIN'), async (req, res) => {
     // Default password is teacher_code
     const hashedPassword = await bcrypt.hash(teacher_code, 10);
 
-    // Create user account
+      // Create user account
     const userResult = await db.promise().query(
       'INSERT INTO users (username, password, role) VALUES (?, ?, ?)',
-      [finalUsername, hashedPassword, 'FACULTY']
+      [finalUsername, hashedPassword, 'TEACHER']
     );
     
     const userId = userResult[0].insertId;

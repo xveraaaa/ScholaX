@@ -4,7 +4,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const authorizeRoles = require('../middleware/authorizeRoles');
 
 // GET all attendance (Admin & Teacher)
-router.get('/', authMiddleware, authorizeRoles('admin', 'teacher'), (req, res) => {
+router.get('/', authMiddleware, authorizeRoles('admin'), (req, res) => {
   const sql = `
     SELECT a.*, 
            s.student_id, s.first_name as student_first, s.last_name as student_last,
@@ -60,7 +60,7 @@ router.get('/student/:student_id', authMiddleware, (req, res) => {
 });
 
 // GET attendance by course (Teacher sees their course attendance)
-router.get('/course/:course_id', authMiddleware, authorizeRoles('admin', 'teacher'), (req, res) => {
+router.get('/course/:course_id', authMiddleware, authorizeRoles('admin'), (req, res) => {
   const sql = `
     SELECT a.*, 
            s.student_id, s.first_name, s.last_name,
@@ -119,7 +119,7 @@ router.get('/:id', authMiddleware, (req, res) => {
 });
 
 // CREATE attendance (Teacher only)
-router.post('/', authMiddleware, authorizeRoles('admin', 'teacher'), (req, res) => {
+router.post('/', authMiddleware, authorizeRoles('admin'), (req, res) => {
   const { enrollment_id, date, status, time_in, time_out, remarks } = req.body;
 
   if (!enrollment_id || !date || !status) {
@@ -150,7 +150,7 @@ router.post('/', authMiddleware, authorizeRoles('admin', 'teacher'), (req, res) 
 });
 
 // UPDATE attendance (Teacher only)
-router.put('/:id', authMiddleware, authorizeRoles('admin', 'teacher'), (req, res) => {
+router.put('/:id', authMiddleware, authorizeRoles('admin'), (req, res) => {
   const { status, time_in, time_out, remarks } = req.body;
 
   const sql = `

@@ -5,7 +5,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const authorizeRoles = require('../middleware/authorizeRoles');
 
 // GET all students with section info
-router.get('/', authMiddleware, authorizeRoles('ADMIN', 'FACULTY'), (req, res) => {
+router.get('/', authMiddleware, authorizeRoles('ADMIN'), (req, res) => {
   const sql = `
     SELECT s.*, 
            p.program_name, 

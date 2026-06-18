@@ -36,7 +36,7 @@ router.post('/register', async (req, res) => {
     const upperRole = role.toUpperCase();
 
     // Check if role is valid
-    if (!['ADMIN', 'FACULTY', 'STUDENT'].includes(upperRole)) {
+    if (!['ADMIN', 'STUDENT'].includes(upperRole)) {
       return res.status(400).json({ message: 'Invalid role' });
     }
 
@@ -150,14 +150,10 @@ router.post('/login', (req, res) => {
         return res.status(401).json({ message: 'Invalid credentials' });
       }
 
-      // Get profile info based on role
+      // Get profile info for students only
       let profile = null;
-      
       if (user.role === 'student') {
         const profileResult = await db.promise().query('SELECT * FROM students WHERE user_id = ?', [user.id]);
-        profile = profileResult[0][0];
-      } else if (user.role === 'teacher') {
-        const profileResult = await db.promise().query('SELECT * FROM teachers WHERE user_id = ?', [user.id]);
         profile = profileResult[0][0];
       }
 
@@ -193,14 +189,9 @@ router.get('/profile', authMiddleware, (req, res) => {
     
     const user = userResult[0];
     
-    // Get profile based on role
+    // Get profile for students only
     if (user.role === 'student') {
       db.query('SELECT * FROM students WHERE user_id = ?', [user.id], (err, profileResult) => {
-        if (err) return res.status(500).json({ message: err.message });
-        res.json({ ...user, profile: profileResult[0] || null });
-      });
-    } else if (user.role === 'teacher') {
-      db.query('SELECT * FROM teachers WHERE user_id = ?', [user.id], (err, profileResult) => {
         if (err) return res.status(500).json({ message: err.message });
         res.json({ ...user, profile: profileResult[0] || null });
       });
